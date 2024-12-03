@@ -10,8 +10,10 @@ def extract_year(full_event):
 
 def prepare_data(start_year, end_year, medal_type, event):
     filtered_df = df[(df['year'] >= start_year) &
-                     (df['year'] <= end_year) &
-                     (df['medal'] == medal_type)]
+                     (df['year'] <= end_year) ]
+    if medal_type != "All":
+        filtered_df = filtered_df[filtered_df['medal'] == medal_type]
+
     if event != "All":
         filtered_df = filtered_df[filtered_df['event'] == event]
 
