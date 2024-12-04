@@ -1,6 +1,6 @@
-from dash import Input, Output
+from dash import Input, Output, dash_table
 import plotly.express as px
-from data import prepare_data
+from data import df, prepare_data
 
 def register_callbacks(app):
     @app.callback(
@@ -25,3 +25,47 @@ def register_callbacks(app):
         )
         fig.update_geos(showframe=False, projection_type="equirectangular")
         return fig
+    
+    @app.callback(
+        Output('pie-chart', 'figure'),
+        Input('year-dropdown', 'value')
+    )
+    def update_pie_chart(selected_year):
+        # Filter data for the selected year
+        filtered_df = df[df['year'] == selected_year]
+        country_medals = filtered_df.groupby('country').size().reset_index(name='medal_count')
+
+        # Create a pie chart
+        fig = px.pie(
+            country_medals,
+            names='country',
+            values='medal_count',
+            title=f'Medal Distribution by Country in {selected_year}',
+        )
+        fig.update_traces(texttemplate='')
+        return fig
+
+    @app.callback(
+        Output('winners-table', 'children'),
+        Input('pie-chart', 'clickData'),
+        Input('year-dropdown', 'value')
+    )
+    def update_table(click_data, selected_year):
+        # Check if a slice was clicked
+        if click_data:
+            country = click_data['points'][0]['label']
+            filtered_df = df[(df['year'] == selected_year) & (df['country'] == country) & (df['medal'].notnull())]
+            table_data = filtered_df[['athlete', 'sport', 'medal']].to_dict('records')
+
+            # Create a DataTable
+            return dash_table.DataTable(
+                columns=[
+                    {'name': 'Athlete', 'id': 'athlete'},
+                    {'name': 'Sport', 'id': 'sport'},
+                    {'name': 'Medal', 'id': 'medal'}
+                ],
+                data=table_data,
+                style_table={'overflowX': 'auto'},
+                style_cell={'textAlign': 'left'}
+            )
+        return "Click on a pie slice to view details."

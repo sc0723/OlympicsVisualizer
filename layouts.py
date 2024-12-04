@@ -35,8 +35,21 @@ choropleth_tab = html.Div([
     dcc.Graph(id='choropleth-map')
 ])
 
-# Layout for example tab
-example_tab = html.Div([
-    html.P("This tab is for another visualization, like a bar chart or line chart."),
-    dcc.Graph(id='example-chart')
+pie_chart_tab = html.Div([
+    html.Div([
+        html.Label("Select Year:"),
+        dcc.Dropdown(
+            id='year-dropdown',
+            options=[{'label': year, 'value': year} for year in sorted(df['year'].unique())],
+            value=df['year'].max()
+        ),
+    ], style={'margin': '20px'}),
+
+    dcc.Graph(id='pie-chart',
+              style={'height': '1400px', 'width': '900px', 'text-align':'center'}),
+
+    html.Div([
+        html.H4("Winners' Details:"),
+        html.Div(id='winners-table')
+    ], style={'margin': '20px'})
 ])
