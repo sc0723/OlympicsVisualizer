@@ -31,18 +31,28 @@ def register_callbacks(app):
         Input('year-dropdown', 'value')
     )
     def update_pie_chart(selected_year):
-        # Filter data for the selected year
         filtered_df = df[df['year'] == selected_year]
         country_medals = filtered_df.groupby('country').size().reset_index(name='medal_count')
 
-        # Create a pie chart
         fig = px.pie(
             country_medals,
             names='country',
             values='medal_count',
             title=f'Medal Distribution by Country in {selected_year}',
         )
-        fig.update_traces(texttemplate='')
+
+        fig.update_traces(
+            textinfo='label+percent', 
+            textposition='inside', 
+            textfont_size=14 
+        )
+
+        fig.update_layout(
+            height=800,    
+            width=1000,         
+            margin=dict(t=50, b=50)   
+        )
+
         return fig
 
     @app.callback(
