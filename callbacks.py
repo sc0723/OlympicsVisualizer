@@ -75,6 +75,7 @@ def register_callbacks(app):
                     {'name': 'Medal', 'id': 'medal'}
                 ],
                 data=table_data,
+                sort_action='native',
                 style_table={'overflowX': 'auto'},
                 style_cell={'textAlign': 'left'}
             )
