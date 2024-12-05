@@ -1,8 +1,7 @@
 from dash import dcc, html
 import pandas as pd
-from data import df  # Import the dataset
+from data import df 
 
-# Layout for the choropleth map tab
 choropleth_tab = html.Div([
     html.Label("Select Time Range:"),
     dcc.RangeSlider(
@@ -45,11 +44,27 @@ pie_chart_tab = html.Div([
         ),
     ], style={'margin': '20px'}),
 
-    dcc.Graph(id='pie-chart',
-              style={'height': '1400px', 'width': '900px', 'text-align':'center'}),
+    # Pie Chart
+    html.Div(
+        dcc.Graph(
+            id='pie-chart',
+            style={
+                'height': '800px',
+                'width': '800px',  
+            }
+        ),
+        style={
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center', 
+            'width': '100%',        
+            'margin-bottom': '10px'  
+        }
+    ),
 
+    # Table for Winners' Details
     html.Div([
-        html.H4("Winners' Details:"),
+        html.H4("Winners' Details:", style={'margin-top': '10px'}), 
         html.Div(id='winners-table')
-    ], style={'margin': '20px'})
+    ], style={'margin': '0 20px'}) 
 ])
