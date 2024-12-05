@@ -31,7 +31,9 @@ choropleth_tab = html.Div([
         ] + [{'label': event, 'value': event} for event in sorted(df['event'].unique())],
         value='All'
     ),
-    dcc.Graph(id='choropleth-map')
+    dcc.Graph(
+        id='choropleth-map',
+        style={'width': '100%', 'height': '800px'})
 ])
 
 pie_chart_tab = html.Div([
