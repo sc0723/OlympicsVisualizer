@@ -1,4 +1,4 @@
-# 439Final
+# 439Final - Saarth Chaturvedi and Amogh Jani
 
 Flask dashboard that shows various visualizations using Olympic data
 
