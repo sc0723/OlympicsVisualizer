@@ -1,8 +1,8 @@
 import pandas as pd
 
-# Load the datasets
 df = pd.read_csv("data/Olympic_Athlete_Event_Details.csv")
 country_df = pd.read_csv("data/Olympic_Country_Profiles.csv")
+olympic_data = pd.read_csv('data/Olympic_Medal_Tally_History.csv')
 
 def extract_year(full_event):
     return int(full_event[0:4])

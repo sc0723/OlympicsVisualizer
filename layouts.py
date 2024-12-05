@@ -1,6 +1,7 @@
-from dash import dcc, html
+from dash import dcc, html, dash_table
 import pandas as pd
-from data import df 
+from data import df, olympic_data
+import plotly.express as px
 
 choropleth_tab = html.Div([
     html.Label("Select Time Range:"),
@@ -46,7 +47,6 @@ pie_chart_tab = html.Div([
         ),
     ], style={'margin': '20px'}),
 
-    # Pie Chart
     html.Div(
         dcc.Graph(
             id='pie-chart',
@@ -64,9 +64,32 @@ pie_chart_tab = html.Div([
         }
     ),
 
-    # Table for Winners' Details
     html.Div([
         html.H4("Winners' Details:", style={'margin-top': '10px'}), 
         html.Div(id='winners-table')
-    ], style={'margin': '0 20px'}) 
+    ], style={'margin': '0 20px'})
 ])
+
+medal_tally_tab = html.Div([
+    html.H3('Olympic Medal Tally History'),
+    dash_table.DataTable(
+        id='medal-tally-table',
+        columns=[{"name": i, "id": i} for i in olympic_data.columns],
+        data=olympic_data.to_dict('records'),
+        page_size=10,
+        style_table={'overflowX': 'auto'},
+        style_cell={'textAlign': 'left'}
+    ),
+    dcc.Graph(
+        id='medal-tally-bar-chart',
+        figure=px.bar(
+            olympic_data,
+            x='year',
+            y='total',
+            color='country',
+            title='Total Medals by Country Over the Years'
+        )
+    )
+])
+
+

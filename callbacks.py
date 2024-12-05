@@ -10,10 +10,8 @@ def register_callbacks(app):
         Input('event-dropdown', 'value')
     )
     def update_map(year_range, selected_medal, selected_event):
-        # Prepare the filtered data
         country_medals = prepare_data(year_range[0], year_range[1], selected_medal, selected_event)
 
-        # Generate the choropleth map
         fig = px.choropleth(
             country_medals,
             locations='country',
@@ -61,13 +59,11 @@ def register_callbacks(app):
         Input('year-dropdown', 'value')
     )
     def update_table(click_data, selected_year):
-        # Check if a slice was clicked
         if click_data:
             country = click_data['points'][0]['label']
             filtered_df = df[(df['year'] == selected_year) & (df['country'] == country) & (df['medal'].notnull())]
             table_data = filtered_df[['athlete', 'sport', 'medal']].to_dict('records')
 
-            # Create a DataTable
             return dash_table.DataTable(
                 columns=[
                     {'name': 'Athlete', 'id': 'athlete'},
